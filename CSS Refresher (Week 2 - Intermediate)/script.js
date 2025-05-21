@@ -4,7 +4,7 @@ const changeStatement = () => {
 
 const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-numFe = document.getElementById("numbers"); // Get the element with id "numbers"
+numFe = document.getElementById("numbers");
 numFe.innerHTML = nums;
 
 const returnState = () => {
