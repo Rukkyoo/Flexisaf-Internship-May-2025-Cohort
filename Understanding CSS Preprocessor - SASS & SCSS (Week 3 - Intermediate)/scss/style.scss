@@ -29,7 +29,7 @@ $transition: all 0.3s ease;
 }
 
 @mixin button-base {
-  padding: 1rem 2rem;
+  padding: 10px;
   border-radius: $border-radius;
   text-decoration: none;
   font-weight: 600;
@@ -81,7 +81,6 @@ body {
   @include flex-between;
   padding: 1rem $container-padding;
   background: $white;
-  box-shadow: $shadow-light;
   position: fixed;
   top: 0;
   left: 0;
