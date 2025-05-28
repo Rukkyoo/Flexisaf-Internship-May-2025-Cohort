@@ -170,6 +170,9 @@ body {
   background: #fff;
   align-items: center;
 }
+.stats__span {
+  color: blue;
+}
 .stats > div:first-child {
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 700;
