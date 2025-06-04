@@ -7,9 +7,7 @@ This repository is part of my practice to learn and understand how to use Git an
 - How to initialize a Git repository locally
 - How to track changes using `git status` and `git add`
 - How to make commits with messages using `git commit`
-- How to connect a local project to GitHub using `git remote`
 - How to push code to a remote repository using `git push`
-- How to create and switch branches using `git checkout -b`
 
 ## 🛠️ Git Commands Practiced
 
