@@ -1,25 +1,25 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 function App() {
-  const [todos, setTodos] = useState([])
-  const [inputValue, setInputValue] = useState('')
+  const [todos, setTodos] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   const addTodo = () => {
-    if (inputValue.trim() !== '') {
-      setTodos([...todos, { id: Date.now(), text: inputValue }])
-      setInputValue('')
+    if (inputValue.trim() !== "") {
+      setTodos([...todos, { id: Date.now(), text: inputValue }]);
+      setInputValue("");
     }
-  }
+  };
 
   const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id))
-  }
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      addTodo()
+    if (e.key === "Enter") {
+      addTodo();
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
@@ -27,7 +27,7 @@ function App() {
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Todo App
         </h1>
-        
+
         <div className="flex gap-2 mb-6">
           <input
             type="text"
@@ -51,8 +51,11 @@ function App() {
               No todos yet. Add one above!
             </p>
           ) : (
-            todos.map(todo => (
-              <div key={todo.id} className="flex items-center justify-between bg-gray-50 p-3 rounded-md">
+            todos.map((todo) => (
+              <div
+                key={todo.id}
+                className="flex items-center justify-between bg-gray-50 p-3 rounded-md"
+              >
                 <span className="text-gray-800">{todo.text}</span>
                 <button
                   onClick={() => deleteTodo(todo.id)}
@@ -65,8 +68,19 @@ function App() {
           )}
         </div>
       </div>
+      <div  className="text-center mt-8 text-gray-600">
+        View{" "}
+        <span className="text-blue-500">
+          <a 
+          target="_blank"
+          href="https://github.com/Rukkyoo/Flexisaf-Internship-May-2025-Cohort/tree/main/Intro%20to%20React%20(Week%206%20-%20Intermediate)">
+            Github
+          </a>
+        </span>{" "}
+        repo here
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
