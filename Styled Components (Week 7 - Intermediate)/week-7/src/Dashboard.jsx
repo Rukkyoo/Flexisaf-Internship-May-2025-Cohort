@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const DashboardContainer = styled.div`
   flex: 1;
@@ -45,6 +45,15 @@ function Dashboard() {
         <Card>Monthly Revenue: $4,500</Card>
         <Card>Tasks Completed: 75%</Card>
         <Card>Active Sessions: 23</Card>
+        <Card>
+          View{" "}
+          <span>
+            <a href="https://github.com/Rukkyoo/Flexisaf-Internship-May-2025-Cohort/tree/main/Styled%20Components%20(Week%207%20-%20Intermediate)/week-7">
+              Github
+            </a>
+          </span>{" "}
+          repo
+        </Card>
       </CardGrid>
     </DashboardContainer>
   );
