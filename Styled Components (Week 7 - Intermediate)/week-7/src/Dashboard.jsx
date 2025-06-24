@@ -4,14 +4,15 @@ import styled from 'styled-components';
 const DashboardContainer = styled.div`
   flex: 1;
   padding: 2rem;
-  width: 75vw;
-  overflow-x: scroll;
+  width: 100vw;
 `;
 
 const Header = styled.h2`
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-bottom: 1.5rem;
+  margin-top: 2rem;
   color: #1f2937;
+  margin-left: 3rem;
 `;
 
 const CardGrid = styled.div`
@@ -27,6 +28,7 @@ const Card = styled.div`
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease;
+  cursor: pointer;
   color: #374151;
 
   &:hover {
