@@ -9,6 +9,7 @@ const Container = styled.div`
   font-family: 'Segoe UI', sans-serif;
   background-color: #f4f6f8;
   width: 100%;
+  max-width: 100vw;
 `;
 
 function App() {

@@ -23,6 +23,7 @@ const CardGrid = styled.div`
 const Card = styled.div`
   background-color: white;
   border-radius: 12px;
+  font-weight: 700;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease;

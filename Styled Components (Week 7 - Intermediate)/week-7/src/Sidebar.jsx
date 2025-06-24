@@ -1,5 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { MdOutlineDashboard } from "react-icons/md";
+import { TbReportSearch } from "react-icons/tb";
+import { CiSettings } from "react-icons/ci";
+import { CiLogout } from "react-icons/ci";
 
 const SidebarContainer = styled.div`
   width: 220px;
@@ -21,6 +25,9 @@ const NavItem = styled.div`
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
   transition: background 0.2s ease-in;
 
   &:hover {
@@ -32,10 +39,18 @@ function Sidebar() {
   return (
     <SidebarContainer>
       <Title>My Dashboard</Title>
-      <NavItem>Dashboard</NavItem>
-      <NavItem>Reports</NavItem>
-      <NavItem>Settings</NavItem>
-      <NavItem>Logout</NavItem>
+      <NavItem>
+        Dashboard <MdOutlineDashboard />
+      </NavItem>
+      <NavItem>
+        Reports <TbReportSearch />
+      </NavItem>
+      <NavItem>
+        Settings <CiSettings />
+      </NavItem>
+      <NavItem>
+        Logout <CiLogout />
+      </NavItem>
     </SidebarContainer>
   );
 }
