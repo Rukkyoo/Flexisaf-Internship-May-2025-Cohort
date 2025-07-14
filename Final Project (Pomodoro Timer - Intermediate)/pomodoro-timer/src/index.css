@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+DE+Grund:wght@100..400&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+ @theme {
+  --font-playwrite: 'Playwrite DE Grund', sans-serif;
+  --font-inconsolata: 'Inconsolata', monospace;
+ }
+
+ 
