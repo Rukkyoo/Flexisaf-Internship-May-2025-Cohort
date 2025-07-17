@@ -1,37 +1,95 @@
 import { RiRestartLine } from "react-icons/ri";
 import { CiPlay1 } from "react-icons/ci";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { CiPause1 } from "react-icons/ci";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [time, setTime] = useState(30);
+  const [session, setSession] = useState("Work");
+  const [completedSessions, setCompletedSessions] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  // Effect to handle the timer countdown for 25 minutes (1500 seconds)
+  useEffect(() => {
+    let timer;
+    if (isRunning && time > 0) {
+      timer = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (time === 0 && session === "Work") {
+      setSession("Short Break");
+      setTime(10);
+      setCompletedSessions((prev) => prev + 1);
+    } else if (time === 0 && session === "Short Break") {
+      setSession("Work");
+      setTime(30);
+    } /* else if (session === "Work" && completedSessions === 4) {
+      setSession("Long Break");
+      setTime(45);
+    } */
+    return () => clearInterval(timer);
+  }, [isRunning, time, session, completedSessions]);
+
+  const startTimer = () => {
+    setIsRunning(true);
+  };
+
+  const pauseTimer = () => {
+    setIsRunning(false);
+  };
+
+  const resetTimer = () => {
+    setIsRunning(false);
+    setTime(30);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold mb-4 px-2 text-center mt-5">
         FIP Final Project (Pomodoro Timer - Intermediate)
       </h1>
       <div className="bg-gray-200 h-92 w-[80vw] rounded-lg p-1">
-
         {/* Session Indicator */}
-        <div className="flex justify-between flex-row items-center px-3 py-1 mt-5 rounded-t-lg">
-          <span className="bg-slate-300 rounded-md px-3 py-1">Work</span>
-          <span className="bg-slate-300 rounded-md px-3 py-1">Short Break</span>
-          <span className="bg-slate-300 rounded-md px-3 py-1">Long Break</span>
+        <div className="flex justify-center flex-row items-center px-3 py-1 mt-5 rounded-t-lg">
+          {/*  <span className="bg-slate-300 rounded-md px-3 py-1">Work</span> */}
+          <span className="bg-slate-300 rounded-md px-3 py-1">{session}</span>
+          {/*  <span className="bg-slate-300 rounded-md px-3 py-1">Long Break</span> */}
         </div>
 
         {/* Timer Display */}
         <div>
-          <h2 className="text-7xl mt-10 font-bold text-center mb-4 font-inconsolata">25:00</h2>
+          <h2 className="text-7xl mt-10 font-bold text-center mb-4 font-inconsolata">
+            {isRunning ? (
+              <>
+                {`${Math.floor(time / 60)}`.padStart(2, 0)}:
+                {`${time % 60}`.padStart(2, 0)}
+              </>
+            ) : (
+              <>
+                {`${Math.floor(time / 60)}`.padStart(2, 0)}:
+                {`${time % 60}`.padStart(2, 0)}
+              </>
+            )}
+          </h2>
         </div>
 
         {/* Buttons */}
         <div className="flex justify-center gap-8 items-center mt-10">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
-            <span className="flex items-center gap-2">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-600 transition-colors">
+            <span
+              onClick={isRunning ? pauseTimer : startTimer}
+              className="flex items-center gap-2 "
+            >
               {" "}
-              <CiPlay1 />
-              Start
+              {isRunning ? <CiPause1 /> : <CiPlay1 />}
+              {isRunning ? "Pause" : "Start"}
             </span>
           </button>
-          <button className="bg-slate-400 text-white px-4 py-2 rounded-lg">
+          <button
+            onClick={resetTimer}
+            className="bg-slate-400 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-slate-500 transition-colors"
+          >
             <RiRestartLine />
           </button>
         </div>
@@ -39,8 +97,9 @@ function App() {
         {/* Session Counter */}
         <div className="flex flex-row items-center mt-7 justify-center p-4">
           <p className="flex items-center gap-2">
-            <IoMdCheckmarkCircleOutline color="green"/>
-            Completed Work Sessions: <span className="font-bold">0</span>
+            <IoMdCheckmarkCircleOutline color="green" />
+            Completed Work Sessions:{" "}
+            <span className="font-bold">{completedSessions}</span>
           </p>
         </div>
       </div>
