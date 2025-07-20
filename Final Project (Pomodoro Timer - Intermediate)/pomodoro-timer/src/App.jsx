@@ -5,7 +5,7 @@ import { CiPause1 } from "react-icons/ci";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [time, setTime] = useState(30);
+  const [time, setTime] = useState(1500);
   const [session, setSession] = useState("Work");
   const [completedSessions, setCompletedSessions] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -13,21 +13,32 @@ function App() {
   // Effect to handle the timer countdown for 25 minutes (1500 seconds)
   useEffect(() => {
     let timer;
+    const audio = new Audio("/timer-sound.mp3");
     if (isRunning && time > 0) {
       timer = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
     } else if (time === 0 && session === "Work") {
-      setSession("Short Break");
-      setTime(10);
-      setCompletedSessions((prev) => prev + 1);
+      const nextCompleted = completedSessions + 1;
+      setCompletedSessions(nextCompleted);
+      if (nextCompleted % 4 === 0) {
+        setSession("Long Break");
+        setTime(900); // Long break duration
+        audio.play();
+      } else {
+        setSession("Short Break");
+        setTime(300); // Short break duration
+        audio.play();
+      }
     } else if (time === 0 && session === "Short Break") {
       setSession("Work");
-      setTime(30);
-    } /* else if (session === "Work" && completedSessions === 4) {
-      setSession("Long Break");
-      setTime(45);
-    } */
+      setTime(1500); // Work duration
+      audio.play();
+    } else if (time === 0 && session === "Long Break") {
+      setSession("Work");
+      setTime(1500); // Work duration after long break
+      audio.play();
+    }
     return () => clearInterval(timer);
   }, [isRunning, time, session, completedSessions]);
 
@@ -52,9 +63,17 @@ function App() {
       <div className="bg-gray-200 h-92 w-[80vw] rounded-lg p-1">
         {/* Session Indicator */}
         <div className="flex justify-center flex-row items-center px-3 py-1 mt-5 rounded-t-lg">
-          {/*  <span className="bg-slate-300 rounded-md px-3 py-1">Work</span> */}
-          <span className="bg-slate-300 rounded-md px-3 py-1">{session}</span>
-          {/*  <span className="bg-slate-300 rounded-md px-3 py-1">Long Break</span> */}
+          <span
+            className={`font-bold rounded-md px-3 py-1 ${
+              session === "Work"
+                ? "bg-green-300"
+                : session === "Short Break"
+                ? "bg-blue-300"
+                : "bg-fuchsia-300"
+            }`}
+          >
+            {session}
+          </span>
         </div>
 
         {/* Timer Display */}
@@ -98,8 +117,9 @@ function App() {
         <div className="flex flex-row items-center mt-7 justify-center p-4">
           <p className="flex items-center gap-2">
             <IoMdCheckmarkCircleOutline color="green" />
-            Completed Work Sessions:{" "}
-            <span className="font-bold">{completedSessions}</span>
+            You have completed{" "}
+            <span className="font-bold">{completedSessions}</span>work sessions.
+            <br />
           </p>
         </div>
       </div>
