@@ -1,7 +1,9 @@
 import { RiRestartLine } from "react-icons/ri";
 import { CiPlay1 } from "react-icons/ci";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { IoMdSettings } from "react-icons/io";
 import { CiPause1 } from "react-icons/ci";
+import { IoMdClose } from "react-icons/io";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -9,6 +11,10 @@ function App() {
   const [session, setSession] = useState("Work");
   const [completedSessions, setCompletedSessions] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [settings, setSettings] = useState(false);
+  const [workSession, setWorkSession] = useState(1500);
+  const [shortBreak, setShortBreak] = useState(300);
+  const [longBreak, setLongBreak] = useState(900);
 
   // Effect to handle the timer countdown for 25 minutes (1500 seconds)
   useEffect(() => {
@@ -55,6 +61,31 @@ function App() {
     setTime(30);
   };
 
+  const openSettings = () => {
+    setSettings(true);
+  };
+
+  const closeSettings = () => {
+    setSettings(false);
+  };
+
+  const handleWorkDurationChange = (event) => {
+    setWorkSession(event.target.value);
+  };
+  const handleShortBreakDurationChange = (event) => {
+    setShortBreak(event.target.value);
+  };
+  const handleLongBreakDurationChange = (event) => {
+    setLongBreak(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    console.log("Work Duration:", workSession)
+    console.log("Short Break Duration:", shortBreak)
+    setSettings(false)
+  }
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold mb-4 px-2 text-center mt-5">
@@ -62,7 +93,7 @@ function App() {
       </h1>
       <div className="bg-gray-200 h-92 w-[80vw] rounded-lg p-1">
         {/* Session Indicator */}
-        <div className="flex justify-center flex-row items-center px-3 py-1 mt-5 rounded-t-lg">
+        <div className="flex justify-between flex-row items-center px-3 py-1 mt-5 rounded-t-lg">
           <span
             className={`font-bold rounded-md px-3 py-1 ${
               session === "Work"
@@ -73,6 +104,9 @@ function App() {
             }`}
           >
             {session}
+          </span>
+          <span className="cursor-pointer" onClick={openSettings}>
+            <IoMdSettings size={25} />
           </span>
         </div>
 
@@ -122,6 +156,64 @@ function App() {
             <br />
           </p>
         </div>
+
+        {/* Settings Modal */}
+        {settings && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-80 p-8 max-h-[90vh] overflow-y-auto h-96">
+              <div
+                onClick={closeSettings}
+                className="cursor-pointer w-full flex flex-row justify-end"
+              >
+                <IoMdClose size={25} color="red" />
+              </div>
+              <div>
+                <form onSubmit={handleSubmit} className="mt-5">
+                  <p>
+                    Work Session Duration (Minutes): <br></br>
+                    <input
+                      className="bg-gray-200 w-15 text-center mr-7"
+                      type="number"
+                      name="work-duration"
+                      value={workSession}
+                      id="work-duration"
+                      onChange={handleWorkDurationChange}
+                    />
+                   i.e {workSession/60} minutes
+                  </p>
+                  <br></br>
+                  <p>
+                    Short Break Duration (Minutes): <br></br>
+                    <input
+                      className="bg-gray-200 w-15 text-center mr-7"
+                      type="number"
+                      name="short-break-duration"
+                      value={shortBreak}
+                      id="short-break-duration"
+                      onChange={handleShortBreakDurationChange}
+                    />
+                  i.e  {shortBreak/60} minutes
+                  </p>
+                  <br></br>
+                  <p>
+                    Long Break Duration (Minutes):
+                    <br></br>
+                    <input
+                      className="bg-gray-200 w-15 text-center mr-7"
+                      type="number"
+                      name="long-break-duration"
+                      value={longBreak}
+                      id="long-break-duration"
+                      onChange={handleLongBreakDurationChange}
+                    />
+                   i.e {longBreak/60} minutes
+                  </p>
+                  <button type="submit" className="mt-4 font-bold bg-green-600 px-2 rounded-md cursor-pointer">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
