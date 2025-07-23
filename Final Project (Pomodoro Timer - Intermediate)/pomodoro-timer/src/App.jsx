@@ -12,39 +12,45 @@ function App() {
   const [completedSessions, setCompletedSessions] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [settings, setSettings] = useState(false);
-  const [workSession, setWorkSession] = useState(1500);
-  const [shortBreak, setShortBreak] = useState(300);
-  const [longBreak, setLongBreak] = useState(900);
+  const [workSession, setWorkSession] = useState(1500); // 25 minutes in seconds
+  const [shortBreak, setShortBreak] = useState(300);    // 5 minutes in seconds
+  const [longBreak, setLongBreak] = useState(900);     // 15 minutes in seconds
 
-  // Effect to handle the timer countdown for 25 minutes (1500 seconds)
+  // Reset timer whenever session type or durations change
+  useEffect(() => {
+    if (session === "Work") {
+      setTime(workSession);
+    } else if (session === "Short Break") {
+      setTime(shortBreak);
+    } else if (session === "Long Break") {
+      setTime(longBreak);
+    }
+  }, [session, workSession, shortBreak, longBreak]);
+
+  // Effect to handle the timer countdown
   useEffect(() => {
     let timer;
     const audio = new Audio("/timer-sound.mp3");
+    
     if (isRunning && time > 0) {
       timer = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
-    } else if (time === 0 && session === "Work") {
-      const nextCompleted = completedSessions + 1;
-      setCompletedSessions(nextCompleted);
-      if (nextCompleted % 4 === 0) {
-        setSession("Long Break");
-        setTime(900); // Long break duration
-        audio.play();
+    } else if (time === 0 && isRunning) {
+      audio.play();
+      if (session === "Work") {
+        const nextCompleted = completedSessions + 1;
+        setCompletedSessions(nextCompleted);
+        if (nextCompleted % 4 === 0) {
+          setSession("Long Break");
+        } else {
+          setSession("Short Break");
+        }
       } else {
-        setSession("Short Break");
-        setTime(300); // Short break duration
-        audio.play();
+        setSession("Work");
       }
-    } else if (time === 0 && session === "Short Break") {
-      setSession("Work");
-      setTime(1500); // Work duration
-      audio.play();
-    } else if (time === 0 && session === "Long Break") {
-      setSession("Work");
-      setTime(1500); // Work duration after long break
-      audio.play();
     }
+    
     return () => clearInterval(timer);
   }, [isRunning, time, session, completedSessions]);
 
@@ -58,7 +64,13 @@ function App() {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setTime(30);
+    if (session === "Work") {
+      setTime(workSession);
+    } else if (session === "Short Break") {
+      setTime(shortBreak);
+    } else if (session === "Long Break") {
+      setTime(longBreak);
+    }
   };
 
   const openSettings = () => {
@@ -70,21 +82,39 @@ function App() {
   };
 
   const handleWorkDurationChange = (event) => {
-    setWorkSession(event.target.value);
+    const minutes = parseInt(event.target.value);
+    setWorkSession(minutes * 60);
   };
+
   const handleShortBreakDurationChange = (event) => {
-    setShortBreak(event.target.value);
+    const minutes = parseInt(event.target.value);
+    setShortBreak(minutes * 60);
   };
+
   const handleLongBreakDurationChange = (event) => {
-    setLongBreak(event.target.value);
+    const minutes = parseInt(event.target.value);
+    setLongBreak(minutes * 60);
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log("Work Duration:", workSession)
-    console.log("Short Break Duration:", shortBreak)
-    setSettings(false)
-  }
+    event.preventDefault();
+    // Reset the timer with new durations
+    if (session === "Work") {
+      setTime(workSession);
+    } else if (session === "Short Break") {
+      setTime(shortBreak);
+    } else if (session === "Long Break") {
+      setTime(longBreak);
+    }
+    setSettings(false);
+  };
+
+  // Helper function to format time
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -113,17 +143,7 @@ function App() {
         {/* Timer Display */}
         <div>
           <h2 className="text-7xl mt-10 font-bold text-center mb-4 font-inconsolata">
-            {isRunning ? (
-              <>
-                {`${Math.floor(time / 60)}`.padStart(2, 0)}:
-                {`${time % 60}`.padStart(2, 0)}
-              </>
-            ) : (
-              <>
-                {`${Math.floor(time / 60)}`.padStart(2, 0)}:
-                {`${time % 60}`.padStart(2, 0)}
-              </>
-            )}
+            {formatTime(time)}
           </h2>
         </div>
 
@@ -152,7 +172,7 @@ function App() {
           <p className="flex items-center gap-2">
             <IoMdCheckmarkCircleOutline color="green" />
             You have completed{" "}
-            <span className="font-bold">{completedSessions}</span>work sessions.
+            <span className="font-bold">{completedSessions}</span> work sessions.
             <br />
           </p>
         </div>
@@ -163,8 +183,9 @@ function App() {
             <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-80 p-8 max-h-[90vh] overflow-y-auto h-96">
               <div
                 onClick={closeSettings}
-                className="cursor-pointer w-full flex flex-row justify-end"
+                className="cursor-pointer w-full flex flex-row justify-between"
               >
+                <span className="font-bold text-xl">Settings</span>
                 <IoMdClose size={25} color="red" />
               </div>
               <div>
@@ -175,11 +196,12 @@ function App() {
                       className="bg-gray-200 w-15 text-center mr-7"
                       type="number"
                       name="work-duration"
-                      value={workSession}
+                      value={workSession / 60}
                       id="work-duration"
                       onChange={handleWorkDurationChange}
+                      min="1"
                     />
-                   i.e {workSession/60} minutes
+                    minutes
                   </p>
                   <br></br>
                   <p>
@@ -188,11 +210,12 @@ function App() {
                       className="bg-gray-200 w-15 text-center mr-7"
                       type="number"
                       name="short-break-duration"
-                      value={shortBreak}
+                      value={shortBreak / 60}
                       id="short-break-duration"
                       onChange={handleShortBreakDurationChange}
+                      min="1"
                     />
-                  i.e  {shortBreak/60} minutes
+                    minutes
                   </p>
                   <br></br>
                   <p>
@@ -202,13 +225,19 @@ function App() {
                       className="bg-gray-200 w-15 text-center mr-7"
                       type="number"
                       name="long-break-duration"
-                      value={longBreak}
+                      value={longBreak / 60}
                       id="long-break-duration"
                       onChange={handleLongBreakDurationChange}
+                      min="1"
                     />
-                   i.e {longBreak/60} minutes
+                    minutes
                   </p>
-                  <button type="submit" className="mt-4 font-bold bg-green-600 px-2 rounded-md cursor-pointer">Submit</button>
+                  <button
+                    type="submit"
+                    className="mt-4 border-2 hover:bg-green-700 transition-colors duration-100 font-bold bg-green-600 px-2 rounded-md cursor-pointer"
+                  >
+                    Submit
+                  </button>
                 </form>
               </div>
             </div>
