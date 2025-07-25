@@ -1,7 +1,5 @@
 # Pomodoro Timer 🍅⏱️
 
-![Pomodoro Timer Demo](demo.gif) *(Replace with your actual demo GIF)*
-
 A customizable productivity timer built with React.js and Tailwind CSS, implementing the Pomodoro Technique (25-minute focused work sessions with short/long breaks).
 
 ## Features ✨
