@@ -28,7 +28,7 @@ const Timer = () => {
   }, [session, workSession, shortBreak, longBreak]);
 
   // Effect to handle the timer countdown
-   useEffect(() => {
+  useEffect(() => {
     let timer;
     const audio = new Audio("/timer-sound.mp3");
     if (isRunning && time > 0) {
@@ -61,7 +61,7 @@ const Timer = () => {
 
   const startTimer = () => setIsRunning(true);
   const pauseTimer = () => setIsRunning(false);
-  
+
   const resetTimer = () => {
     setIsRunning(false);
     if (session === "Work") {
@@ -99,70 +99,108 @@ const Timer = () => {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const getSessionColor = () => {
+    switch (session) {
+      case "Work":
+        return "bg-emerald-100 text-emerald-800";
+      case "Short Break":
+        return "bg-blue-100 text-blue-800";
+      case "Long Break":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold mb-4 px-2 text-center mt-5">
-        FIP Final Project (Pomodoro Timer - Intermediate)
-      </h1>
-      <div className="bg-gray-200 h-92 w-[80vw] rounded-lg p-1">
-        {/* Session Indicator */}
-        <div className="flex justify-between flex-row items-center px-3 py-1 mt-5 rounded-t-lg">
-          <span
-            className={`font-bold rounded-md px-3 py-1 ${
-              session === "Work"
-                ? "bg-green-300"
-                : session === "Short Break"
-                ? "bg-blue-300"
-                : "bg-fuchsia-300"
-            }`}
-          >
-            {session}
-          </span>
-          <span className="cursor-pointer" onClick={openSettings}>
-            <IoMdSettings size={25} />
-          </span>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-center">
+          <h1 className="text-2xl font-bold text-white">Pomodoro Timer</h1>
+          <p className="text-blue-100 mt-1">Stay focused, be productive</p>
         </div>
 
-        {/* Timer Display */}
-        <div>
-          <h2 className="text-7xl mt-10 font-bold text-center mb-4 font-inconsolata">
-            {formatTime(time)}
-          </h2>
-        </div>
-
-        {/* Buttons */}
-        <div className="flex justify-center gap-8 items-center mt-10">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-600 transition-colors">
+        {/* Main Content */}
+        <div className="p-6">
+          {/* Session Indicator */}
+          <div className="flex justify-between items-center mb-6">
             <span
-              onClick={isRunning ? pauseTimer : startTimer}
-              className="flex items-center gap-2 "
+              className={`text-sm border-2 font-semibold px-3 py-1 rounded-full ${getSessionColor()}`}
             >
-              {" "}
-              {isRunning ? <CiPause1 /> : <CiPlay1 />}
-              {isRunning ? "Pause" : "Start"}
+              {session}
             </span>
-          </button>
-          <button
-            onClick={resetTimer}
-            className="bg-slate-400 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-slate-500 transition-colors"
-          >
-            <RiRestartLine />
-          </button>
+            <button
+              onClick={openSettings}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+              aria-label="Settings"
+            >
+              <IoMdSettings size={22} />
+            </button>
+          </div>
+
+          {/* Timer Display */}
+          <div className="mb-8 text-center">
+            <div className="text-7xl font-bold font-mono text-gray-800 mb-2">
+              {formatTime(time)}
+            </div>
+            <p className="text-gray-500 text-sm">
+              {isRunning ? "Time is running..." : "Ready to focus?"}
+            </p>
+          </div>
+
+          {/* Control Buttons */}
+          <div className="flex justify-center gap-4 mb-8">
+            <button
+              onClick={isRunning ? pauseTimer : startTimer}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                isRunning
+                  ? "bg-amber-500 hover:bg-amber-600 text-white"
+                  : "bg-green-500 hover:bg-green-600 text-white"
+              }`}
+            >
+              {isRunning ? <CiPause1 size={20} /> : <CiPlay1 size={20} />}
+              {isRunning ? "Pause" : "Start"}
+            </button>
+            <button
+              onClick={resetTimer}
+              className="flex items-center gap-2 px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors"
+            >
+              <RiRestartLine size={18} />
+            </button>
+          </div>
+
+          {/* Progress */}
+          <div className="bg-gray-100 rounded-lg p-4 text-center">
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
+              <IoMdCheckmarkCircleOutline
+                className="text-green-500"
+                size={18}
+              />
+              <span>
+                Completed sessions: <strong>{completedSessions}</strong>
+              </span>
+            </div>
+            <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-green-500 h-2 rounded-full"
+                style={{ width: `${(completedSessions % 4) * 25}%` }}
+              ></div>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              {completedSessions % 4 === 0
+                ? "Take a long break!"
+                : `${4 - (completedSessions % 4)} more for long break`}
+            </p>
+          </div>
         </div>
 
-        {/* Session Counter */}
-        <div className="flex flex-row items-center mt-7 justify-center p-4">
-          <p className="flex items-center gap-2">
-            <IoMdCheckmarkCircleOutline color="green" />
-            You have completed{" "}
-            <span className="font-bold">{completedSessions}</span> work sessions.
-            <br />
-          </p>
-        </div>
-
+        {/* Settings Modal */}
         <Settings
           isOpen={settingsOpen}
           onClose={closeSettings}
@@ -175,6 +213,16 @@ const Timer = () => {
           onSubmit={handleSubmit}
         />
       </div>
+      <p className="mt-5">
+        Check{" "}
+        <a
+          className="text-cyan-600 underline"
+          target="_blank"
+          href="https://github.com/Rukkyoo/Flexisaf-Internship-May-2025-Cohort/tree/main/Final%20Project%20(Pomodoro%20Timer%20-%20Intermediate)"
+        >
+          Github Repo
+        </a>
+      </p>
     </div>
   );
 };
