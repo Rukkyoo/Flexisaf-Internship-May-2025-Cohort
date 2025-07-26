@@ -29,10 +29,6 @@ A customizable productivity timer built with React.js and Tailwind CSS, implemen
 - **Build Tool**: Vite (optional)
 
 ## Installation 🚀
-
-<<<<<<< HEAD
-1. Clone the repository:
-=======
 1. Clone the repository
 >>>>>>> fce241dae3719d7acfa567c28c85343b064eda5f
 - git clone https://github.com/Rukkyoo/Flexisaf-Internship-May-2025-Cohort/tree/main/Final%20Project%20(Pomodoro%20Timer%20-%20Intermediate)
