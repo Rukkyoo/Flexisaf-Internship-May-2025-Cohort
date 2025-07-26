@@ -1,7 +1,5 @@
 # Pomodoro Timer 🍅⏱️
 
-![Pomodoro Timer Demo](demo.gif) *(Replace with your actual demo GIF)*
-
 A customizable productivity timer built with React.js and Tailwind CSS, implementing the Pomodoro Technique (25-minute focused work sessions with short/long breaks).
 
 ## Features ✨
@@ -33,7 +31,6 @@ A customizable productivity timer built with React.js and Tailwind CSS, implemen
 ## Installation 🚀
 
 1. Clone the repository:
-   ```bash
 - git clone https://github.com/Rukkyoo/Flexisaf-Internship-May-2025-Cohort/tree/main/Final%20Project%20(Pomodoro%20Timer%20-%20Intermediate)
 - cd pomodoro-timer
 - npm install
@@ -45,6 +42,8 @@ pomodoro-timer/
 │   ├── components/
 │   │   ├── Timer.jsx       # Main timer logic and UI
 │   │   └── Settings.jsx    # Settings modal component
+│   │   └── Settings.test.jsx    # Test settings component
+│   │   └── Timer.test.jsx    # Test timer component
 │   ├── App.jsx             # Root component
 │   └── main.jsx            # Entry point
 ├── Screenshots/                 # Pictures

@@ -131,6 +131,7 @@ const Timer = () => {
           {/* Session Indicator */}
           <div className="flex justify-between items-center mb-6">
             <span
+            data-testid="session-indicator"
               className={`text-sm border-2 font-semibold px-3 py-1 rounded-full ${getSessionColor()}`}
             >
               {session}
@@ -157,6 +158,7 @@ const Timer = () => {
           {/* Control Buttons */}
           <div className="flex justify-center gap-4 mb-8">
             <button
+              aria-label={isRunning ? "Pause timer" : "Start timer"}
               onClick={isRunning ? pauseTimer : startTimer}
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                 isRunning
@@ -168,6 +170,7 @@ const Timer = () => {
               {isRunning ? "Pause" : "Start"}
             </button>
             <button
+              aria-label="Reset timer"
               onClick={resetTimer}
               className="flex items-center gap-2 px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors"
             >
