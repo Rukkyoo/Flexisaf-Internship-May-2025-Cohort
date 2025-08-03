@@ -226,6 +226,16 @@ const Timer = () => {
           Github Repo
         </a>
       </p>
+      <p className="mt-5">
+        Check{" "}
+        <a
+          className="text-cyan-600 underline"
+          target="_blank"
+          href="https://www.slideshare.net/slideshow/a-react-pomodoro-timer-web-application-pdf/282175460"
+        >
+          Powerpoint Presentation pdf
+        </a>
+      </p>
     </div>
   );
 };
