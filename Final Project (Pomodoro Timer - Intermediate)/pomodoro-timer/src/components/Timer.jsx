@@ -121,7 +121,7 @@ const Timer = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-center">
+        <div className="bg-gradient-to-r bg-blue-500 p-6 text-center">
           <h1 className="text-2xl font-bold text-white">Pomodoro Timer</h1>
           <p className="text-blue-100 mt-1">Stay focused, be productive</p>
         </div>

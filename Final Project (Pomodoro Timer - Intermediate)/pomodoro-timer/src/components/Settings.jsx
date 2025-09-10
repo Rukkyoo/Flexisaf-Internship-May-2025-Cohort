@@ -17,7 +17,7 @@ const Settings = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-5 flex justify-between items-center">
+        <div className="bg-gradient-to-r bg-blue-500 p-5 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">Timer Settings</h2>
           <button 
             onClick={onClose}
